@@ -34,7 +34,7 @@ module Bundler
         local_temp_path = local_temp_path.sub(/$/, ".tmp")
 
         # first try to fetch any new bytes on the existing file
-        if retrying.nil? && local_path.file? && local_etag_path.file?
+        if retrying.nil? && local_path.file?
           copy_file local_path, local_temp_path
           copy_file local_etag_path, local_etag_temp_path if local_etag_path
 
@@ -137,6 +137,8 @@ module Bundler
       ResponseDigest = Struct.new(:algorithm, :value)
 
       def parse_digest_list(header)
+        return [] if header.nil?
+
         [].tap do |digest_list|
 
           # Split the header by commas
